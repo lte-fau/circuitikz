@@ -17,7 +17,7 @@
 
 \NeedsTeXFormat{LaTeX2e}
 
-\def\pgfcircversion{git:586dc7b}
+\def\pgfcircversion{git:d63e41c}
 \def\pgfcircversiondate{2016/05/26}
 
 \ProvidesPackage{circuitikzgit}
@@ -447,6 +447,10 @@
 \ctikzset{bipoles/pvsource/width/.initial=.60}
 \ctikzset{bipoles/isource/height/.initial=.60}
 \ctikzset{bipoles/isource/width/.initial=.60}
+\ctikzset{bipoles/oosource/height/.initial=.60}
+\ctikzset{bipoles/oosource/width/.initial=.60}
+\ctikzset{bipoles/oosource/circlesize/.initial=.65}%circlesize+circleoffset should be =1
+\ctikzset{bipoles/oosource/circleoffset/.initial=.35}%circlesize+circleoffset should be =1
 \ctikzset{bipoles/dcisource/height/.initial=.60}
 \ctikzset{bipoles/dcisource/width/.initial=.60}
 \ctikzset{bipoles/dcvsource/height/.initial=.60}
@@ -2645,7 +2649,17 @@
 	\pgfusepath{draw}
 }
 
+%% Independent double oo source
 
+\pgfcircdeclarebipole{}{\ctikzvalof{bipoles/oosource/height}}{oosource}{\ctikzvalof{bipoles/oosource/height}}{\ctikzvalof{bipoles/oosource/width}}{
+	\pgfpointorigin
+	\pgfsetlinewidth{\pgfkeysvalueof{/tikz/circuitikz/bipoles/thickness}\pgfstartlinewidth}
+	\pgfpathcircle{\pgfpoint{\ctikzvalof{bipoles/oosource/circleoffset}\pgf@circ@res@left}{0}}
+		{\ctikzvalof{bipoles/oosource/circlesize}\pgf@circ@res@left}
+	\pgfpathcircle{\pgfpoint{\ctikzvalof{bipoles/oosource/circleoffset}\pgf@circ@res@right}{0}}
+		{\ctikzvalof{bipoles/oosource/circlesize}\pgf@circ@res@right}	
+	\pgfusepath{draw}
+}
 
 
 %% Independent current source - American
@@ -9637,6 +9651,7 @@
 \def\pgf@circ@vsourceam@path#1{\pgf@circ@bipole@path{vsourceAM}{#1}}
 \def\pgf@circ@vsourcesin@path#1{\pgf@circ@bipole@path{vsourcesin}{#1}}
 \def\pgf@circ@isource@path#1{\pgf@circ@bipole@path{isource}{#1}}
+\def\pgf@circ@oosource@path#1{\pgf@circ@bipole@path{oosource}{#1}}
 \def\pgf@circ@dcisource@path#1{\pgf@circ@bipole@path{dcisource}{#1}}
 \def\pgf@circ@isourcesin@path#1{\pgf@circ@bipole@path{isourcesin}{#1}}
 \def\pgf@circ@vsourcesquare@path#1{\pgf@circ@bipole@path{vsourcesquare}{#1}}
@@ -9936,6 +9951,8 @@
 \compattikzset{dcvsource/.style = {\circuitikzbasekey, /tikz/to path=\pgf@circ@dcvsource@path, \circuitikzbasekey/bipole/is voltage=true,\circuitikzbasekey/bipole/is voltageoutsideofsymbol=true, v=#1}}
 \compattikzset{dcisource/.style = {\circuitikzbasekey, /tikz/to path=\pgf@circ@dcisource@path, \circuitikzbasekey/bipole/is current=true, i=#1}}
 
+\compattikzset{ioosource/.style = {\circuitikzbasekey, \circuitikzbasekey/bipole/is current=true,/tikz/to path=\pgf@circ@oosource@path}}
+\compattikzset{voosource/.style = {\circuitikzbasekey, \circuitikzbasekey/bipole/is voltage=true,/tikz/to path=\pgf@circ@oosource@path}}
 
 \compattikzset{vsource/.style = {\comnpatname voltage source = #1}}
 \compattikzset{isource/.style = {\comnpatname current source = #1}}
